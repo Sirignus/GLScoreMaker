@@ -34,22 +34,19 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.ConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.label1 = new System.Windows.Forms.Label();
-			this.NumericSkips = new System.Windows.Forms.NumericUpDown();
 			this.label2 = new System.Windows.Forms.Label();
-			this.NumericDeaths = new System.Windows.Forms.NumericUpDown();
-			this.NumericLevels = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.TextBoxFinalScore = new System.Windows.Forms.TextBox();
-			this.LabelLevelsValue = new System.Windows.Forms.Label();
-			this.LabelSkipsValue = new System.Windows.Forms.Label();
-			this.LabelDeathsValue = new System.Windows.Forms.Label();
 			this.ButtonReset = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.NumericSkips)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.NumericDeaths)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.NumericLevels)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// statusStrip1
@@ -58,7 +55,7 @@
             this.toolStripStatusLabel1});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 239);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(290, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(277, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -74,7 +71,7 @@
             this.ConfigurationToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(290, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(277, 24);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -94,20 +91,6 @@
 			this.label1.TabIndex = 3;
 			this.label1.Text = "Skips :";
 			// 
-			// NumericSkips
-			// 
-			this.NumericSkips.Location = new System.Drawing.Point(102, 89);
-			this.NumericSkips.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-			this.NumericSkips.Name = "NumericSkips";
-			this.NumericSkips.Size = new System.Drawing.Size(62, 20);
-			this.NumericSkips.TabIndex = 4;
-			this.NumericSkips.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.NumericSkips.ValueChanged += new System.EventHandler(this.NumericSkips_ValueChanged);
-			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
@@ -116,34 +99,6 @@
 			this.label2.Size = new System.Drawing.Size(39, 13);
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Morts :";
-			// 
-			// NumericDeaths
-			// 
-			this.NumericDeaths.Location = new System.Drawing.Point(102, 125);
-			this.NumericDeaths.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-			this.NumericDeaths.Name = "NumericDeaths";
-			this.NumericDeaths.Size = new System.Drawing.Size(62, 20);
-			this.NumericDeaths.TabIndex = 6;
-			this.NumericDeaths.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.NumericDeaths.ValueChanged += new System.EventHandler(this.NumericDeaths_ValueChanged);
-			// 
-			// NumericLevels
-			// 
-			this.NumericLevels.Location = new System.Drawing.Point(102, 54);
-			this.NumericLevels.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-			this.NumericLevels.Name = "NumericLevels";
-			this.NumericLevels.Size = new System.Drawing.Size(62, 20);
-			this.NumericLevels.TabIndex = 8;
-			this.NumericLevels.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.NumericLevels.ValueChanged += new System.EventHandler(this.NumericLevels_ValueChanged);
 			// 
 			// label3
 			// 
@@ -174,36 +129,6 @@
 			this.TextBoxFinalScore.Text = "0.00";
 			this.TextBoxFinalScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
-			// LabelLevelsValue
-			// 
-			this.LabelLevelsValue.AutoSize = true;
-			this.LabelLevelsValue.Location = new System.Drawing.Point(214, 56);
-			this.LabelLevelsValue.Name = "LabelLevelsValue";
-			this.LabelLevelsValue.Size = new System.Drawing.Size(22, 13);
-			this.LabelLevelsValue.TabIndex = 11;
-			this.LabelLevelsValue.Text = "+ 0";
-			this.LabelLevelsValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// LabelSkipsValue
-			// 
-			this.LabelSkipsValue.AutoSize = true;
-			this.LabelSkipsValue.Location = new System.Drawing.Point(217, 91);
-			this.LabelSkipsValue.Name = "LabelSkipsValue";
-			this.LabelSkipsValue.Size = new System.Drawing.Size(19, 13);
-			this.LabelSkipsValue.TabIndex = 12;
-			this.LabelSkipsValue.Text = "- 0";
-			this.LabelSkipsValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// LabelDeathsValue
-			// 
-			this.LabelDeathsValue.AutoSize = true;
-			this.LabelDeathsValue.Location = new System.Drawing.Point(217, 127);
-			this.LabelDeathsValue.Name = "LabelDeathsValue";
-			this.LabelDeathsValue.Size = new System.Drawing.Size(19, 13);
-			this.LabelDeathsValue.TabIndex = 13;
-			this.LabelDeathsValue.Text = "- 0";
-			this.LabelDeathsValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
 			// ButtonReset
 			// 
 			this.ButtonReset.Location = new System.Drawing.Point(12, 194);
@@ -214,22 +139,84 @@
 			this.ButtonReset.UseVisualStyleBackColor = true;
 			this.ButtonReset.Click += new System.EventHandler(this.ButtonReset_Click);
 			// 
+			// button1
+			// 
+			this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.button1.Location = new System.Drawing.Point(142, 47);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(28, 28);
+			this.button1.TabIndex = 15;
+			this.button1.Text = "+";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// button2
+			// 
+			this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.button2.Location = new System.Drawing.Point(142, 82);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(28, 28);
+			this.button2.TabIndex = 16;
+			this.button2.Text = "+";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
+			// button3
+			// 
+			this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.button3.Location = new System.Drawing.Point(142, 118);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(28, 28);
+			this.button3.TabIndex = 17;
+			this.button3.Text = "+";
+			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler(this.button3_Click);
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(102, 56);
+			this.label5.Name = "label5";
+			this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.label5.Size = new System.Drawing.Size(13, 13);
+			this.label5.TabIndex = 18;
+			this.label5.Text = "0";
+			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(102, 91);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(13, 13);
+			this.label6.TabIndex = 19;
+			this.label6.Text = "0";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(102, 127);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(13, 13);
+			this.label7.TabIndex = 20;
+			this.label7.Text = "0";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(290, 261);
+			this.ClientSize = new System.Drawing.Size(277, 261);
+			this.Controls.Add(this.label7);
+			this.Controls.Add(this.label6);
+			this.Controls.Add(this.label5);
+			this.Controls.Add(this.button3);
+			this.Controls.Add(this.button2);
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.ButtonReset);
-			this.Controls.Add(this.LabelDeathsValue);
-			this.Controls.Add(this.LabelSkipsValue);
-			this.Controls.Add(this.LabelLevelsValue);
 			this.Controls.Add(this.TextBoxFinalScore);
 			this.Controls.Add(this.label4);
-			this.Controls.Add(this.NumericLevels);
 			this.Controls.Add(this.label3);
-			this.Controls.Add(this.NumericDeaths);
 			this.Controls.Add(this.label2);
-			this.Controls.Add(this.NumericSkips);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.menuStrip1);
@@ -244,9 +231,6 @@
 			this.statusStrip1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.NumericSkips)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.NumericDeaths)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.NumericLevels)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -258,18 +242,18 @@
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem ConfigurationToolStripMenuItem;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.NumericUpDown NumericSkips;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.NumericUpDown NumericDeaths;
-		private System.Windows.Forms.NumericUpDown NumericLevels;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox TextBoxFinalScore;
-		private System.Windows.Forms.Label LabelLevelsValue;
-		private System.Windows.Forms.Label LabelSkipsValue;
-		private System.Windows.Forms.Label LabelDeathsValue;
 		private System.Windows.Forms.Button ButtonReset;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label7;
 	}
 }
 

@@ -107,6 +107,7 @@
 			this.button1.TabIndex = 6;
 			this.button1.Text = "Valider";
 			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// FormConfig
 			// 
@@ -123,6 +124,7 @@
 			this.Name = "FormConfig";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormConfig_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.NumericLevelMultiplier)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumericDeathMultiplier)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumericSkipMultiplier)).EndInit();

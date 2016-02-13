@@ -39,5 +39,15 @@ namespace GLScoreMaker
 		{
 			DeathMultiplier = (float)NumericDeathMultiplier.Value;
 		}
+
+		private void button1_Click (object sender, EventArgs e)
+		{
+
+		}
+
+		private void FormConfig_FormClosing (object sender, FormClosingEventArgs e)
+		{
+
+		}
 	}
 }

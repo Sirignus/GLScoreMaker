@@ -1,16 +1,25 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace GLScoreMaker
 {
 	public partial class Form1 : Form
 	{
-
-		public int LevelCount, SkipCount, DeathCount;
+		protected int previousLevelCount, previousSkipCount, previousDeathCount;
+		public int LevelCount, SkipCount, SkipEffectiveCount, DeathCount, DeathEffectiveCount;
 
 		public float LevelMultiplier = 10f, SkipMultiplier = 2f, DeathMultiplier = 0.5f;
 
-		public float FinalScore = 0f;
+		public float DeathScore = 0f, SkipScore = 0f;
+		protected float finalScore = 0f;
+		public float FinalScore
+		{
+			get { return finalScore; }
+			set { finalScore = value; if (finalScore < 0) { finalScore = 0; } UpdateFinalScoreText(); }
+		}
+
+		public bool ShouldUpdateFile = true;
 
 		protected System.Timers.Timer statusLabelTimer;
 
@@ -18,15 +27,75 @@ namespace GLScoreMaker
 		{
 			InitializeComponent();
 
+			TryFileAuthorization();
+			UpdateFile();
+
 			statusLabelTimer = new System.Timers.Timer(4000f);
 			statusLabelTimer.Elapsed += delegate (object s, System.Timers.ElapsedEventArgs e2) { toolStripStatusLabel1.Text = ""; statusLabelTimer.Stop(); };
 			statusLabelTimer.AutoReset = false;
 			toolStripStatusLabel1.TextChanged += ToolStripStatusLabel1_TextChanged;
 		}
 
+		protected void TryFileAuthorization ()
+		{
+			try
+			{
+				using (StreamWriter sr = new StreamWriter(Application.StartupPath + "Data.txt"))
+				{
+					sr.WriteLine("Levels finis : " + LevelCount);
+					sr.WriteLine("Skips : " + SkipCount);
+					sr.WriteLine("Morts : " + DeathCount);
+					sr.WriteLine("Score : " + FinalScore);
+				}
+			}
+			catch
+			{
+				MessageBox.Show("Il semble que l'application ne peut créer ou modifier le fichier texte " + Application.StartupPath + "Data.txt" + " !\n Vérifiez que vous avez les droits d'access nécessaires et relancez l'application pour que vous puissiez utiliser le fichier texte.\nSi des problèmes persistent, n'hésitez pas à m'insulter sur mon twitter : @Sirignus !",
+					"Impossible de créer de fichier texte !", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+				ShouldUpdateFile = false;
+			}
+		}
+
+		protected void UpdateFile ()
+		{
+			if (ShouldUpdateFile)
+			{
+				try
+				{
+					using (StreamWriter sr = new StreamWriter(Application.StartupPath + "Data.txt"))
+					{
+						sr.WriteLine("Levels finis : " + LevelCount);
+						sr.WriteLine("Skips : " + SkipCount);
+						sr.WriteLine("Morts : " + DeathCount);
+						sr.WriteLine("Score : " + FinalScore);
+					}
+				}
+				catch
+				{
+					toolStripStatusLabel1.Text = "Impossible de changer le fichier txt";
+				}
+			}
+		}
+
 		private void Form1_Load (object sender, EventArgs e)
 		{
 
+		}
+
+		private void button3_Click (object sender, EventArgs e)
+		{
+			IncrementDeathCount();
+		}
+
+		private void button2_Click (object sender, EventArgs e)
+		{
+			IncrementSkipCount();
+		}
+
+		private void button1_Click (object sender, EventArgs e)
+		{
+			IncrementLevelCount();
 		}
 
 		private void ConfigurationToolStripMenuItem_Click (object sender, EventArgs e)
@@ -39,17 +108,20 @@ namespace GLScoreMaker
 				SkipMultiplier = form.SkipMultiplier;
 				DeathMultiplier = form.DeathMultiplier;
 
-				UpdateAllValues();
+				ResetScore();
 			}
 		}
 
-		protected void UpdateAllValues ()
+		protected void ResetScore ()
 		{
-			LabelLevelsValue.Text = "+ " + (LevelCount * LevelMultiplier);
-			LabelSkipsValue.Text = "- " + (SkipCount * SkipMultiplier);
-			LabelDeathsValue.Text = "- " + (DeathCount * DeathMultiplier);
+			LevelCount = 0; label5.Text = "0";
+			SkipCount = 0; label6.Text = "0";
+			DeathCount = 0; label7.Text = "0";
 
-			UpdateFinalScore();
+			FinalScore = 0;
+			UpdateFinalScoreText();
+
+			UpdateFile();
 		}
 
 		private void ButtonReset_Click (object sender, EventArgs e)
@@ -59,9 +131,7 @@ namespace GLScoreMaker
 
 			if (result == DialogResult.Yes)
 			{
-				NumericLevels.Value = 0;
-				NumericSkips.Value = 0;
-				NumericDeaths.Value = 0;
+				ResetScore();
 			}
 		}
 
@@ -70,69 +140,61 @@ namespace GLScoreMaker
 			switch (e.KeyCode)
 			{
 				case Keys.Space:
-					NumericDeaths.Value++;
+					IncrementDeathCount();
 					e.Handled = true;
 					e.SuppressKeyPress = true;
 					break;
 				case Keys.S:
-					NumericSkips.Value++;
+					IncrementSkipCount();
 					e.Handled = true;
 					e.SuppressKeyPress = true;
 					break;
 				case Keys.L:
-					NumericLevels.Value++;
+					IncrementLevelCount();
 					e.Handled = true;
 					e.SuppressKeyPress = true;
 					break;
 			}
 		}
 
-		private void NumericLevels_ValueChanged (object sender, EventArgs e)
+		protected void IncrementLevelCount ()
 		{
-			LevelCount = (int)NumericLevels.Value;
-			LabelLevelsValue.Text = "+ " + (LevelCount * LevelMultiplier);
-			UpdateFinalScore();
+			LevelCount++;
+			label5.Text = LevelCount.ToString();
+
+			FinalScore += LevelMultiplier;
+			UpdateFinalScoreText();
+
+			UpdateFile();
 		}
 
-		private void NumericSkips_ValueChanged (object sender, EventArgs e)
+		protected void IncrementSkipCount ()
 		{
-			if (FinalScore > 0 || NumericSkips.Value < SkipCount)
-			{
-				SkipCount = (int)NumericSkips.Value;
-				LabelSkipsValue.Text = "- " + (SkipCount * SkipMultiplier);
-				UpdateFinalScore();
-			}
-			else
-			{
-				NumericSkips.Value = SkipCount;
-				toolStripStatusLabel1.Text = "Vous ne pouvez ajouter de skips si score final = 0 !";
-			}
+			SkipCount++;
+			label6.Text = SkipCount.ToString();
+
+			FinalScore -= SkipMultiplier;
+			UpdateFinalScoreText();
+
+			UpdateFile();
 		}
 
-		private void NumericDeaths_ValueChanged (object sender, EventArgs e)
+		protected void IncrementDeathCount ()
 		{
-			if (FinalScore > 0 || NumericDeaths.Value < DeathCount)
+			DeathCount++;
+			label7.Text = DeathCount.ToString();
+
+			if (DeathCount % 10 == 0)
 			{
-				DeathCount = (int)NumericDeaths.Value;
-				LabelDeathsValue.Text = "- " + (DeathCount * DeathMultiplier);
-				UpdateFinalScore();
+				FinalScore -= 10 * DeathMultiplier;
+				UpdateFinalScoreText();
 			}
-			else
-			{
-				NumericDeaths.Value = DeathCount;
-				toolStripStatusLabel1.Text = "Vous ne pouvez ajouter de morts si score final = 0 !";
-			}
+
+			UpdateFile();
 		}
 
-
-		protected void UpdateFinalScore ()
+		protected void UpdateFinalScoreText ()
 		{
-			FinalScore = LevelCount * LevelMultiplier - SkipCount * SkipMultiplier - DeathCount * DeathMultiplier;
-			if (FinalScore < 0)
-			{
-				FinalScore = 0;
-			}
-
 			TextBoxFinalScore.Text = FinalScore.ToString("N2");
 		}
 
