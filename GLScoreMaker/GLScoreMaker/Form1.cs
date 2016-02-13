@@ -40,7 +40,7 @@ namespace GLScoreMaker
 		{
 			try
 			{
-				using (StreamWriter sr = new StreamWriter(Application.StartupPath + "Data.txt"))
+				using (StreamWriter sr = new StreamWriter(Application.StartupPath + "\\" + "Data.txt"))
 				{
 					sr.WriteLine("Levels finis : " + LevelCount);
 					sr.WriteLine("Skips : " + SkipCount);
@@ -63,7 +63,7 @@ namespace GLScoreMaker
 			{
 				try
 				{
-					using (StreamWriter sr = new StreamWriter(Application.StartupPath + "Data.txt"))
+					using (StreamWriter sr = new StreamWriter(Application.StartupPath + "\\" + "Data.txt"))
 					{
 						sr.WriteLine("Levels finis : " + LevelCount);
 						sr.WriteLine("Skips : " + SkipCount);
