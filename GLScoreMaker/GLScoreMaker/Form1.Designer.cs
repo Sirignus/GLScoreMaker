@@ -45,6 +45,8 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
+			this.annulerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.rétablirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -68,12 +70,15 @@
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ConfigurationToolStripMenuItem});
+            this.ConfigurationToolStripMenuItem,
+            this.annulerToolStripMenuItem,
+            this.rétablirToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(277, 24);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
+			this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
 			// 
 			// ConfigurationToolStripMenuItem
 			// 
@@ -201,6 +206,24 @@
 			this.label7.TabIndex = 20;
 			this.label7.Text = "0";
 			// 
+			// annulerToolStripMenuItem
+			// 
+			this.annulerToolStripMenuItem.Enabled = false;
+			this.annulerToolStripMenuItem.Name = "annulerToolStripMenuItem";
+			this.annulerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+			this.annulerToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+			this.annulerToolStripMenuItem.Text = "Annuler";
+			this.annulerToolStripMenuItem.Click += new System.EventHandler(this.annulerToolStripMenuItem_Click);
+			// 
+			// rétablirToolStripMenuItem
+			// 
+			this.rétablirToolStripMenuItem.Enabled = false;
+			this.rétablirToolStripMenuItem.Name = "rétablirToolStripMenuItem";
+			this.rétablirToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+			this.rétablirToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+			this.rétablirToolStripMenuItem.Text = "Rétablir";
+			this.rétablirToolStripMenuItem.Click += new System.EventHandler(this.rétablirToolStripMenuItem_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -254,6 +277,8 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.ToolStripMenuItem annulerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem rétablirToolStripMenuItem;
 	}
 }
 

@@ -1,13 +1,50 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Xml;
 using System.Windows.Forms;
 
 namespace GLScoreMaker
 {
+	public struct ScoreState
+	{
+		public ScoreState(int levelCount, int skipCount, int deathCount, float finalScore) 
+		{
+			LevelCount = levelCount;
+			SkipCount = skipCount;
+			DeathCount = deathCount;
+			FinalScore = finalScore;
+		}
+
+		public int LevelCount, SkipCount, DeathCount;
+		public float FinalScore;
+	}
+
 	public partial class Form1 : Form
 	{
-		protected int previousLevelCount, previousSkipCount, previousDeathCount;
-		public int LevelCount, SkipCount, SkipEffectiveCount, DeathCount, DeathEffectiveCount;
+		protected List<ScoreState> CommandHistory;
+		protected int CommandIndex;
+
+		protected int levelCount;
+		public int LevelCount
+		{
+			get { return levelCount; }
+			set { levelCount = value; label5.Text = levelCount.ToString(); }
+		}
+
+		protected int skipCount;
+		public int SkipCount
+		{
+			get { return skipCount; }
+			set { skipCount = value; label6.Text = skipCount.ToString(); }
+		}
+
+		protected int deathCount;
+		public int DeathCount
+		{
+			get { return deathCount; }
+			set { deathCount = value; label7.Text = deathCount.ToString(); }
+		}
 
 		public float LevelMultiplier = 10f, SkipMultiplier = 2f, DeathMultiplier = 0.5f;
 
@@ -27,14 +64,71 @@ namespace GLScoreMaker
 		{
 			InitializeComponent();
 
+			if (File.Exists(Application.StartupPath + "\\config.xml")) 
+			{
+				LoadConfig();
+			}
+
 			TryFileAuthorization();
 			UpdateFile();
+
+			CommandHistory = new List<ScoreState>();
+			CommandHistory.Add(new ScoreState(0, 0, 0, 0f));
 
 			statusLabelTimer = new System.Timers.Timer(4000f);
 			statusLabelTimer.Elapsed += delegate (object s, System.Timers.ElapsedEventArgs e2) { toolStripStatusLabel1.Text = ""; statusLabelTimer.Stop(); };
 			statusLabelTimer.AutoReset = false;
 			toolStripStatusLabel1.TextChanged += ToolStripStatusLabel1_TextChanged;
 		}
+
+		#region CommandHistory functions
+
+		/// <summary>
+		/// Add a ScoreState to the CommandHistory list. 
+		/// When adding a ScoreState, remove all remaining commands paste the CommandIndex (i.e. remove all the redos)
+		/// </summary>
+		/// <param name="scoreState">The ScoreState to add</param>
+		protected void AddScoreStateToHistory (ScoreState scoreState) 
+		{
+			// When adding a new Command, remove every command paste the current
+			if (CommandIndex < CommandHistory.Count - 1)  
+			{
+				CommandHistory.RemoveRange(CommandIndex + 1, CommandHistory.Count - 1 - CommandIndex);
+			}
+			CommandHistory.Add(scoreState);
+			CommandIndex++;
+
+			rétablirToolStripMenuItem.Enabled = false;
+			annulerToolStripMenuItem.Enabled = true;
+		}
+
+		protected void SetNewScoreState (ScoreState scoreState) 
+		{
+			LevelCount = scoreState.LevelCount;
+			SkipCount = scoreState.SkipCount;
+			DeathCount = scoreState.DeathCount;
+			FinalScore = scoreState.FinalScore;
+		}
+
+		protected void Undo () 
+		{
+			if (CommandIndex > 0) 
+			{
+				CommandIndex--;
+				SetNewScoreState(CommandHistory[CommandIndex]);
+			}
+		}
+
+		protected void Redo () 
+		{
+			if (CommandIndex < CommandHistory.Count - 1) 
+			{
+				CommandIndex++;
+				SetNewScoreState(CommandHistory[CommandIndex]);
+			}
+		}
+
+		#endregion
 
 		protected void TryFileAuthorization ()
 		{
@@ -109,6 +203,8 @@ namespace GLScoreMaker
 				DeathMultiplier = form.DeathMultiplier;
 
 				ResetScore();
+
+				SaveConfig();
 			}
 		}
 
@@ -119,6 +215,13 @@ namespace GLScoreMaker
 			DeathCount = 0; label7.Text = "0";
 
 			FinalScore = 0;
+
+			CommandHistory.Clear();
+			CommandHistory.Add(new ScoreState(0, 0, 0, 0f));
+			CommandIndex = 0;
+			annulerToolStripMenuItem.Enabled = false;
+			rétablirToolStripMenuItem.Enabled = false;
+
 			UpdateFinalScoreText();
 
 			UpdateFile();
@@ -163,6 +266,9 @@ namespace GLScoreMaker
 			label5.Text = LevelCount.ToString();
 
 			FinalScore += LevelMultiplier;
+
+			AddScoreStateToHistory(new ScoreState(LevelCount, SkipCount, DeathCount, FinalScore));
+
 			UpdateFinalScoreText();
 
 			UpdateFile();
@@ -174,9 +280,34 @@ namespace GLScoreMaker
 			label6.Text = SkipCount.ToString();
 
 			FinalScore -= SkipMultiplier;
+
+			AddScoreStateToHistory(new ScoreState(LevelCount, SkipCount, DeathCount, FinalScore));
+
 			UpdateFinalScoreText();
 
 			UpdateFile();
+		}
+
+		private void menuStrip1_ItemClicked (object sender, ToolStripItemClickedEventArgs e) {
+
+		}
+
+		private void annulerToolStripMenuItem_Click (object sender, EventArgs e) {
+			Undo();
+			rétablirToolStripMenuItem.Enabled = true;
+			if (CommandIndex <= 0) 
+			{
+				annulerToolStripMenuItem.Enabled = false;
+			}
+		}
+
+		private void rétablirToolStripMenuItem_Click (object sender, EventArgs e) {
+			Redo();
+			annulerToolStripMenuItem.Enabled = true;
+			if (CommandIndex >= CommandHistory.Count - 1) 
+			{
+				rétablirToolStripMenuItem.Enabled = false;
+			}
 		}
 
 		protected void IncrementDeathCount ()
@@ -189,6 +320,8 @@ namespace GLScoreMaker
 				FinalScore -= 10 * DeathMultiplier;
 				UpdateFinalScoreText();
 			}
+
+			AddScoreStateToHistory(new ScoreState(LevelCount, SkipCount, DeathCount, FinalScore));
 
 			UpdateFile();
 		}
@@ -215,6 +348,63 @@ namespace GLScoreMaker
 				}
 				
 			}
+		}
+
+		public void SaveConfig () 
+		{
+			try {
+				XmlDocument document = new XmlDocument();
+				document.AppendChild(document.CreateXmlDeclaration("1.0", "", ""));
+
+				XmlElement GLScoreMakerElement = document.CreateElement("GLScoreMaker");
+				XmlElement LevelMultiplierElement = document.CreateElement("LevelMultiplier");
+				LevelMultiplierElement.AppendChild(document.CreateTextNode(LevelMultiplier.ToString()));
+				XmlElement SkipMultiplierElement = document.CreateElement("SkipMultiplier");
+				SkipMultiplierElement.AppendChild(document.CreateTextNode(SkipMultiplier.ToString()));
+				XmlElement DeathMultiplierElement = document.CreateElement("DeathMultiplier");
+				DeathMultiplierElement.AppendChild(document.CreateTextNode(DeathMultiplier.ToString()));
+
+				GLScoreMakerElement.AppendChild(LevelMultiplierElement);
+				GLScoreMakerElement.AppendChild(SkipMultiplierElement);
+				GLScoreMakerElement.AppendChild(DeathMultiplierElement);
+
+				document.AppendChild(GLScoreMakerElement);
+
+				document.Save(Application.StartupPath + "\\config.xml");
+			} catch {
+				toolStripStatusLabel1.Text = "Impossible de sauvegarder la config";
+			}
+			
+		}
+
+		public void LoadConfig () 
+		{
+			XmlDocument document = new XmlDocument();
+			try {
+				document.Load(Application.StartupPath + "\\config.xml");
+
+				XmlNodeList nodes = document["GLScoreMaker"].ChildNodes;
+				foreach (XmlNode node in nodes) 
+				{
+					switch (node.Name) 
+					{
+						case "LevelMultiplier":
+							LevelMultiplier = float.Parse(node.InnerText);
+							break;
+						case "SkipMultiplier":
+							SkipMultiplier = float.Parse(node.InnerText);
+							break;
+						case "DeathMultiplier":
+							DeathMultiplier = float.Parse(node.InnerText);
+							break;
+					}
+				}
+
+
+			} catch {
+				toolStripStatusLabel1.Text = "Impossible de récupérer la dernière config";
+			}
+			
 		}
 	}
 }
