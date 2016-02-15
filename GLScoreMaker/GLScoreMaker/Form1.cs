@@ -22,6 +22,8 @@ namespace GLScoreMaker
 
 	public partial class Form1 : Form
 	{
+		#region Attributes & Properties
+
 		protected List<ScoreState> CommandHistory;
 		protected int CommandIndex;
 
@@ -46,7 +48,8 @@ namespace GLScoreMaker
 			set { deathCount = value; label7.Text = deathCount.ToString(); }
 		}
 
-		public float LevelMultiplier = 10f, SkipMultiplier = 2f, DeathMultiplier = 0.5f;
+		public float LevelMultiplier = 10f, SkipMultiplier = 2f, DeathMultiplier = 5f;
+		public int DeathModulo = 10;
 
 		public float DeathScore = 0f, SkipScore = 0f;
 		protected float finalScore = 0f;
@@ -60,6 +63,8 @@ namespace GLScoreMaker
 
 		protected System.Timers.Timer statusLabelTimer;
 
+		#endregion
+
 		public Form1 ()
 		{
 			InitializeComponent();
@@ -67,6 +72,10 @@ namespace GLScoreMaker
 			if (File.Exists(Application.StartupPath + "\\config.xml")) 
 			{
 				LoadConfig();
+			}
+			else
+			{
+				SaveConfig();
 			}
 
 			TryFileAuthorization();
@@ -195,12 +204,13 @@ namespace GLScoreMaker
 		private void ConfigurationToolStripMenuItem_Click (object sender, EventArgs e)
 		{
 			FormConfig form = new FormConfig();
-			form.Init(LevelMultiplier, SkipMultiplier, DeathMultiplier);
+			form.Init(LevelMultiplier, SkipMultiplier, DeathMultiplier, DeathModulo);
 			if (form.ShowDialog() == DialogResult.OK)
 			{
 				LevelMultiplier = form.LevelMultiplier;
 				SkipMultiplier = form.SkipMultiplier;
 				DeathMultiplier = form.DeathMultiplier;
+				DeathModulo = form.DeathModulo;
 
 				ResetScore();
 
@@ -315,9 +325,9 @@ namespace GLScoreMaker
 			DeathCount++;
 			label7.Text = DeathCount.ToString();
 
-			if (DeathCount % 10 == 0)
+			if (DeathCount % DeathModulo == 0)
 			{
-				FinalScore -= 10 * DeathMultiplier;
+				FinalScore -= DeathMultiplier;
 				UpdateFinalScoreText();
 			}
 
@@ -363,10 +373,13 @@ namespace GLScoreMaker
 				SkipMultiplierElement.AppendChild(document.CreateTextNode(SkipMultiplier.ToString()));
 				XmlElement DeathMultiplierElement = document.CreateElement("DeathMultiplier");
 				DeathMultiplierElement.AppendChild(document.CreateTextNode(DeathMultiplier.ToString()));
+				XmlElement DeathModuloElement = document.CreateElement("DeathModulo");
+				DeathModuloElement.AppendChild(document.CreateTextNode(DeathModulo.ToString()));
 
 				GLScoreMakerElement.AppendChild(LevelMultiplierElement);
 				GLScoreMakerElement.AppendChild(SkipMultiplierElement);
 				GLScoreMakerElement.AppendChild(DeathMultiplierElement);
+				GLScoreMakerElement.AppendChild(DeathModuloElement);
 
 				document.AppendChild(GLScoreMakerElement);
 
@@ -396,6 +409,9 @@ namespace GLScoreMaker
 							break;
 						case "DeathMultiplier":
 							DeathMultiplier = float.Parse(node.InnerText);
+							break;
+						case "DeathModulo":
+							DeathModulo = int.Parse(node.InnerText);
 							break;
 					}
 				}

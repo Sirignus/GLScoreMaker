@@ -35,9 +35,13 @@
 			this.NumericDeathMultiplier = new System.Windows.Forms.NumericUpDown();
 			this.NumericSkipMultiplier = new System.Windows.Forms.NumericUpDown();
 			this.button1 = new System.Windows.Forms.Button();
+			this.label4 = new System.Windows.Forms.Label();
+			this.NumericDeathModulo = new System.Windows.Forms.NumericUpDown();
+			this.label5 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.NumericLevelMultiplier)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumericDeathMultiplier)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumericSkipMultiplier)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.NumericDeathModulo)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -52,11 +56,11 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(41, 126);
+			this.label2.Location = new System.Drawing.Point(12, 126);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(118, 13);
+			this.label2.Size = new System.Drawing.Size(77, 13);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "Points perdus par mort :";
+			this.label2.Text = "Points perdus :";
 			// 
 			// label3
 			// 
@@ -70,7 +74,6 @@
 			// 
 			// NumericLevelMultiplier
 			// 
-			this.NumericLevelMultiplier.DecimalPlaces = 2;
 			this.NumericLevelMultiplier.Location = new System.Drawing.Point(165, 45);
 			this.NumericLevelMultiplier.Name = "NumericLevelMultiplier";
 			this.NumericLevelMultiplier.Size = new System.Drawing.Size(63, 20);
@@ -80,17 +83,15 @@
 			// 
 			// NumericDeathMultiplier
 			// 
-			this.NumericDeathMultiplier.DecimalPlaces = 2;
-			this.NumericDeathMultiplier.Location = new System.Drawing.Point(165, 124);
+			this.NumericDeathMultiplier.Location = new System.Drawing.Point(95, 124);
 			this.NumericDeathMultiplier.Name = "NumericDeathMultiplier";
-			this.NumericDeathMultiplier.Size = new System.Drawing.Size(63, 20);
+			this.NumericDeathMultiplier.Size = new System.Drawing.Size(39, 20);
 			this.NumericDeathMultiplier.TabIndex = 4;
 			this.NumericDeathMultiplier.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.NumericDeathMultiplier.ValueChanged += new System.EventHandler(this.NumericDeathMultiplier_ValueChanged);
 			// 
 			// NumericSkipMultiplier
 			// 
-			this.NumericSkipMultiplier.DecimalPlaces = 2;
 			this.NumericSkipMultiplier.Location = new System.Drawing.Point(165, 85);
 			this.NumericSkipMultiplier.Name = "NumericSkipMultiplier";
 			this.NumericSkipMultiplier.Size = new System.Drawing.Size(63, 20);
@@ -109,11 +110,53 @@
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(140, 126);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(52, 13);
+			this.label4.TabIndex = 7;
+			this.label4.Text = "toutes les";
+			this.label4.Click += new System.EventHandler(this.label4_Click);
+			// 
+			// NumericDeathModulo
+			// 
+			this.NumericDeathModulo.Location = new System.Drawing.Point(198, 124);
+			this.NumericDeathModulo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.NumericDeathModulo.Name = "NumericDeathModulo";
+			this.NumericDeathModulo.Size = new System.Drawing.Size(37, 20);
+			this.NumericDeathModulo.TabIndex = 8;
+			this.NumericDeathModulo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.NumericDeathModulo.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.NumericDeathModulo.ValueChanged += new System.EventHandler(this.NumericDeathModulo_ValueChanged);
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(241, 126);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(32, 13);
+			this.label5.TabIndex = 9;
+			this.label5.Text = "morts";
+			this.label5.Click += new System.EventHandler(this.label5_Click);
+			// 
 			// FormConfig
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(258, 192);
+			this.ClientSize = new System.Drawing.Size(284, 192);
+			this.Controls.Add(this.label5);
+			this.Controls.Add(this.NumericDeathModulo);
+			this.Controls.Add(this.label4);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.NumericSkipMultiplier);
 			this.Controls.Add(this.NumericDeathMultiplier);
@@ -128,6 +171,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.NumericLevelMultiplier)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumericDeathMultiplier)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.NumericSkipMultiplier)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.NumericDeathModulo)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -142,5 +186,8 @@
 		private System.Windows.Forms.NumericUpDown NumericDeathMultiplier;
 		private System.Windows.Forms.NumericUpDown NumericSkipMultiplier;
 		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.NumericUpDown NumericDeathModulo;
+		private System.Windows.Forms.Label label5;
 	}
 }
